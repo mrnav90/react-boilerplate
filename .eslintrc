@@ -1,0 +1,44 @@
+{
+  "extends": "airbnb",
+  "plugins": [
+    "react"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "globals": {
+    "API_URL": true,
+    "APP_URL": true
+  },
+  "rules": {
+    "no-useless-constructor": "off",
+    "import/prefer-default-export": "off",
+    "max-lines": [2, {  // specify the max number of lines in a file
+      max: 300,
+      skipBlankLines: true,
+      skipComments: true
+    }],
+    "max-lines-per-function": [2, {  // enforce a maximum function length
+      max: 50,
+      skipBlankLines: true,
+      skipComments: true,
+      IIFEs: true,
+    }],
+    "max-params": [2, 3],  // limits the number of parameters that can be used in the function declaration.
+    "max-depth": [2, 4],  // specify the maximum depth that blocks can be nested
+    "max-statements": [2, 10],  // specify the maximum number of statement allowed in a function
+    "max-statements-per-line": [2, { max: 1 }],  // restrict the number of statements per line,
+    "import/no-extraneous-dependencies": ["error", {"peerDependencies": true}],
+    "quote-props": [0, "always"]
+  }
+}
