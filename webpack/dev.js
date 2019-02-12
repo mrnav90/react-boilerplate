@@ -1,6 +1,7 @@
-import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import webpack from 'webpack';
 import path from 'path';
 import dotenv from 'dotenv';
 
@@ -40,18 +41,6 @@ const webpackConfig = {
             },
             {
               loader: 'sass-loader',
-              options: {
-                data: `
-                  @import "variables";
-                  @import "fonts";
-                  @import "font-icons";
-                  @import "functions";
-                  @import "mixins";
-                `,
-                includePaths: [
-                  path.resolve(__dirname, '../src/styles/'),
-                ],
-              },
             },
           ],
         }),
@@ -81,6 +70,10 @@ const webpackConfig = {
     ],
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      filename: path.join(__dirname, '../dist/index.html'),
+      template:  path.join(__dirname, '../index.html')
+    }),
     new webpack.ProvidePlugin({
       '$': 'jquery',
       'jQuery': 'jquery',
@@ -95,7 +88,6 @@ const webpackConfig = {
       'APP_URL': JSON.stringify(process.env.APP_URL),
     }),
     new CopyWebpackPlugin([
-      { from: path.join(__dirname, '../index.html'), to: path.join(__dirname, '../dist/index.html') },
       { from: path.join(__dirname, '../assets'), to: path.join(__dirname, '../dist/') },
     ]),
   ],
