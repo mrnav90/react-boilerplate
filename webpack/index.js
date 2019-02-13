@@ -10,13 +10,14 @@ const DEVELOPMENT = process.env.NODE_ENV === 'development';
 const webpackConfig = {
   entry: DEVELOPMENT ? webpackDevConfig.entry : webpackProductionConfig.entry,
   output: DEVELOPMENT ? webpackDevConfig.output : webpackProductionConfig.output,
+  mode: process.env.NODE_ENV,
   resolve: {
     extensions: ['.jsx', '.js'],
     alias: {
       jquery: path.join(__dirname, '../node_modules/jquery/dist/jquery'),
       components: path.resolve(__dirname, '../src/components'),
       containers: path.resolve(__dirname, '../src/containers'),
-      commons: path.resolve(__dirname, '../src/commons'),
+      config: path.resolve(__dirname, '../src/config'),
       api: path.resolve(__dirname, '../src/api'),
       styles: path.resolve(__dirname, '../src/styles'),
       pages: path.resolve(__dirname, '../src/pages'),

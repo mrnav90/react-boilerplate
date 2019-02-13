@@ -1,5 +1,6 @@
 {
   "extends": "airbnb",
+  "parser": "babel-eslint",
   "plugins": [
     "react"
   ],
@@ -14,15 +15,31 @@
         "paths": ["src"],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
-    }
+    },
   },
   "globals": {
     "API_URL": true,
-    "APP_URL": true
+    "APP_URL": true,
+    "window": true,
+    "document": true
   },
   "rules": {
     "no-useless-constructor": "off",
     "import/prefer-default-export": "off",
+    "react/prefer-stateless-function": [0, {"ignorePureComponents": true}],
+    "camelcase": ["error", {
+      allow: [
+      "UNSAFE_componentWillMount",
+      "UNSAFE_componentWillReceiveProps",
+      "child_process"
+    ]}],
+    "class-methods-use-this": 0,
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": ["i18n", "commons", "components", "containers", "api", "styles", "pages", "modals", "utils", "stores", "config"]
+      }
+    ],
     "max-lines": [2, {  // specify the max number of lines in a file
       max: 300,
       skipBlankLines: true,

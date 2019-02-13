@@ -11,7 +11,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const webpackConfig = {
-  entry: ['./src/index.js', 'babel-polyfill'],
+  entry: ['./src/app.jsx', 'babel-polyfill'],
   output: {
     path: path.join(__dirname, '../public'),
     filename: 'app.[contenthash:6].js',
