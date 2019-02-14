@@ -4,7 +4,7 @@ import './styles/app.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { routes } from 'config';
+import routes from 'config/routes';
 import { AppRoot } from 'components/Application';
 import stores from 'stores';
 

@@ -6,8 +6,8 @@ import AppRoutes from './AppRoutes';
 
 export default class AppRoot extends Component {
   static propTypes = {
-    stores: PropTypes.InstanceOf(Object).isRequired,
-    routes: PropTypes.InstanceOf(Array).isRequired,
+    stores: PropTypes.oneOfType([PropTypes.object]).isRequired,
+    routes: PropTypes.oneOfType([PropTypes.array]).isRequired,
   };
 
   constructor(props) {

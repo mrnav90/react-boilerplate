@@ -5,11 +5,11 @@ import AppRoutes from './AppRoutes';
 
 export default class Application extends Component {
   static contextTypes = {
-    router: PropTypes.InstanceOf(Object),
+    router: PropTypes.oneOfType([PropTypes.object]),
   };
 
   static propTypes = {
-    route: PropTypes.InstanceOf(Object).isRequired,
+    route: PropTypes.oneOfType([PropTypes.object]).isRequired,
   };
 
   constructor(props) {

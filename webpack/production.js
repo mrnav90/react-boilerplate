@@ -79,14 +79,14 @@ const webpackConfig = {
     }),
     new HtmlWebpackPlugin({
       filename: path.join(__dirname, '../public/index.html'),
-      template:  path.join(__dirname, '../index.html'),
+      template: path.join(__dirname, '../index.html'),
       minify: {
         collapseWhitespace: true,
         removeComments: true,
         removeRedundantAttributes: true,
         removeScriptTypeAttributes: true,
         removeStyleLinkTypeAttributes: true,
-        useShortDoctype: true
+        useShortDoctype: true,
       },
     }),
     new webpack.ProvidePlugin({
@@ -118,7 +118,7 @@ const webpackConfig = {
       { from: path.join(__dirname, '../assets'), to: path.join(__dirname, '../public/assets') },
     ]),
     new ManifestPlugin({
-      filter: ({name}) => ['main.js', 'main.css'].indexOf(name) !== -1
+      filter: ({ name }) => ['main.js', 'main.css'].indexOf(name) !== -1,
     }),
   ],
 };

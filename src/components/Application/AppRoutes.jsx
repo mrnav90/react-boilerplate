@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 export default class AppRoutes extends Component {
   static propTypes = {
-    routes: PropTypes.InstanceOf(Array).isRequired,
+    routes: PropTypes.oneOfType([PropTypes.array]).isRequired,
   };
 
   constructor(props) {

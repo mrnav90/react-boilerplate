@@ -46,6 +46,7 @@ const webpackConfig = {
         }),
       },
       {
+        type: 'javascript/auto',
         test: /\.json$/,
         loader: 'json-loader',
       },
@@ -72,7 +73,7 @@ const webpackConfig = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: path.join(__dirname, '../dist/index.html'),
-      template:  path.join(__dirname, '../index.html')
+      template: path.join(__dirname, '../index.html'),
     }),
     new webpack.ProvidePlugin({
       '$': 'jquery',
@@ -82,7 +83,7 @@ const webpackConfig = {
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new ExtractTextPlugin({ filename: 'style.css', allChunks: true }),
+    new ExtractTextPlugin({ filename: 'app.css', allChunks: true }),
     new webpack.DefinePlugin({
       'API_URL': JSON.stringify(process.env.API_URL),
       'APP_URL': JSON.stringify(process.env.APP_URL),
