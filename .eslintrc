@@ -21,12 +21,16 @@
     "API_URL": true,
     "APP_URL": true,
     "window": true,
-    "document": true
+    "document": true,
+    "describe": true,
+    "test": true,
+    "expect": true
   },
   "rules": {
     "no-useless-constructor": "off",
     "import/prefer-default-export": "off",
     "react/prefer-stateless-function": [0, {"ignorePureComponents": true}],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "camelcase": ["error", {
       allow: [
       "UNSAFE_componentWillMount",
