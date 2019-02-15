@@ -1,10 +1,7 @@
 import React from 'react';
-import Enzyme, { shallow } from 'enzyme';
-import EnzymeAdapter from 'enzyme-adapter-react-16';
+import { shallow } from 'enzyme';
 import { Application } from 'components/Application';
 import { PageNotFound } from 'pages';
-
-Enzyme.configure({ adapter: new EnzymeAdapter() });
 
 describe('Application Component', () => {
   test('Render component', () => {
