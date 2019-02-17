@@ -50,6 +50,7 @@ const webpackConfig = {
         loader: 'url-loader',
       },
       {
+        type: 'javascript/auto',
         test: /\.json$/,
         loader: 'json-loader',
       },

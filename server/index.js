@@ -6,47 +6,59 @@ import dotenv from 'dotenv';
 import path from 'path';
 import ejs from 'ejs';
 import fs from 'fs';
+import compression from 'compression';
 import { parse as parseUrl } from 'url';
-import { AppRoot } from 'components/Application';
 import routes from 'config/routes';
 import stores from 'stores';
+import { StaticRouter as Router } from 'react-router-dom';
+import { Provider } from 'mobx-react';
+import AppRoutes from 'components/Application/AppRoutes';
 
 dotenv.config();
+
+const build = process.env.NODE_ENV === 'development' ? 'dist' : 'public';
+const isDevelopment = process.env.NODE_ENV === 'development';
+const PORT = process.env.PORT || 3001;
+const staticFiles = [
+  '/*.png',
+  '/*.jpg',
+  '/*.jpeg',
+  '/*.svg',
+  '/*.ttf',
+  '/*.css',
+  '/*.js',
+];
 
 export default {
   run: () => {
     const app = express();
     const server = new Server(app);
-    const build = process.env.NODE_ENV === 'development' ? 'dist' : 'public';
-    const PORT = process.env.PORT || 3001;
-    const staticFiles = [
-      '/*.png',
-      '/*.jpg',
-      '/*.jpeg',
-      '/*.svg',
-      '/*.ttf',
-      '/*.css',
-      '/*.js',
-    ];
-    const appContainer = ReactDOMServer.renderToString(
-      <AppRoot stores={stores} routes={routes} />,
-    );
+
+    app.use(compression({ threshold: 0 }));
+
+    staticFiles.forEach((file) => {
+      app.get(file, (req, res) => {
+        const filePath = path.resolve(`${build}/${req.url}`);
+        res.set('Content-Encoding', 'gzip');
+        res.sendFile(filePath);
+      });
+    });
 
     app.use(express.static(path.join(__dirname, '..', build)));
     app.set('view engine', 'ejs');
 
     app.get('*', (req, res) => {
-      let error = () => {
-        res.writeHead(404);
-        res.write('Error');
-        res.end();
-      };
-      const url = req.originalUrl || req.url;
-      const location = parseUrl(url);
       const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', `${build}/manifest.json`)));
       const pageTitle = 'React boilerplate';
-      const jsFile = manifest['main.js'];
-      const styleFile = manifest['main.css'];
+      const jsFile = isDevelopment ? 'app.js' : manifest['main.js'];
+      const styleFile = isDevelopment ? 'app.css' : manifest['main.css'];
+      const appContainer = ReactDOMServer.renderToString(
+        <Provider {...stores}>
+          <Router>
+            <AppRoutes routes={routes} />
+          </Router>
+        </Provider>,
+      );
 
       ejs.renderFile(path.join(__dirname, '..', 'index.ejs'), {
         appContainer,

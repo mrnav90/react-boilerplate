@@ -2,10 +2,12 @@ import dotenv from 'dotenv';
 import path from 'path';
 import webpackProductionConfig from './production';
 import webpackDevConfig from './dev';
+import serverConfig from './server';
 
 dotenv.config();
 
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
+const SSR = process.env.SSR === 'yes';
 
 const webpackConfig = {
   entry: DEVELOPMENT ? webpackDevConfig.entry : webpackProductionConfig.entry,
@@ -29,6 +31,7 @@ const webpackConfig = {
       modals: path.resolve(__dirname, '../src/modals'),
     },
   },
+  performance: { hints: false },
   node: {
     fs: 'empty',
     child_process: 'empty',
@@ -50,7 +53,7 @@ const webpackConfig = {
   devtool: DEVELOPMENT ? webpackDevConfig.devtool : webpackProductionConfig.devtool,
 };
 
-if (DEVELOPMENT) {
+if (DEVELOPMENT && !SSR) {
   webpackConfig.devServer = {
     contentBase: path.join(__dirname, '../dist'),
     disableHostCheck: true,
@@ -77,4 +80,4 @@ if (DEVELOPMENT) {
   };
 }
 
-export default webpackConfig;
+export default SSR ? [webpackConfig, serverConfig] : webpackConfig;
