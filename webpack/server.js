@@ -1,5 +1,8 @@
+import webpack from 'webpack';
 import path from 'path';
 import dotenv from 'dotenv';
+import TerserPlugin from 'terser-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 dotenv.config();
 
@@ -24,6 +27,7 @@ const serverConfig = {
     __dirname: true,
     setImmediate: false,
   },
+  performance: { hints: false },
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
@@ -41,6 +45,13 @@ const serverConfig = {
       modals: path.resolve(__dirname, '../src/modals'),
     },
   },
+  stats: {
+    children: false,
+    colors: {
+      green: '\u001b[32m',
+    },
+  },
+  externals: ['express'],
   module: {
     rules: [
       {
@@ -48,8 +59,36 @@ const serverConfig = {
         exclude: /node_modules/,
         loader: 'babel-loader',
       },
+      {
+        test: /\.(md)$/,
+        loader: ExtractTextPlugin.extract({
+          use: [
+            'html', 'highlight', 'markdown',
+          ],
+        }),
+      },
     ],
   },
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        test: /\.js(\?.*)?$/i,
+        terserOptions: {
+          ecma: 6,
+        },
+      }),
+    ],
+  },
+  plugins: [
+    new webpack.NamedModulesPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
+    }),
+  ],
 };
 
 export default serverConfig;

@@ -4,6 +4,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 import path from 'path';
 import dotenv from 'dotenv';
@@ -71,6 +72,17 @@ const webpackConfig = {
       },
     ],
   },
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        test: /\.js(\?.*)?$/i,
+        terserOptions: {
+          ecma: 6,
+        },
+      }),
+    ],
+  },
   plugins: [
     new CleanWebpackPlugin([
       'public',
@@ -116,7 +128,7 @@ const webpackConfig = {
       minRatio: 0.8,
     }),
     new CopyWebpackPlugin([
-      { from: path.join(__dirname, '../assets'), to: path.join(__dirname, '../public/assets') },
+      { from: path.join(__dirname, '../assets'), to: path.join(__dirname, '../public') },
     ]),
     new ManifestPlugin({
       filter: ({ name }) => ['main.js', 'main.css'].indexOf(name) !== -1,

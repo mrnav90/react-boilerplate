@@ -46,7 +46,9 @@
     "stylelint-config-recommended": "^2.1.0",
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^1.5.2",
+    "terser-webpack-plugin": "^1.2.2",
     "toastr": "^2.1.4",
+    "uglifyjs-webpack-plugin": "^2.1.1",
     "universal-cookie": "^3.0.7",
     "validator": "^10.11.0"
   },
