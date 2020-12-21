@@ -1,9 +1,7 @@
 {
-  "extends": "airbnb",
   "parser": "babel-eslint",
-  "plugins": [
-    "react"
-  ],
+  "extends": ['airbnb', 'prettier', 'prettier/react'],
+  "plugins": ['prettier', 'redux-saga', 'react', 'react-hooks', 'jsx-a11y'],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -18,30 +16,58 @@
     },
   },
   "globals": {
-    "API_URL": true,
-    "APP_URL": true,
     "window": true,
     "document": true,
     "describe": true,
     "test": true,
-    "expect": true
+    "expect": true,
+    "navigator": true,
+    "API_URL": true,
+    "APP_URL": true,
+    "APP_DOMAIN": true,
+    "NODE_ENV": true,
+    "SOCKET_URL": true,
+    "PUSHER_APP_KEY": true,
+    "$": true,
+    "PORT": true,
+    "SSR": true,
+    "localStorage": true,
+    "sessionStorage": true,
+    "Blob": true,
+    "Image": true,
+    "FormData": true,
+    "WebSocket": true,
   },
   "rules": {
     "no-useless-constructor": "off",
     "import/prefer-default-export": "off",
+    "react/jsx-props-no-spreading": 0,
+    "react/state-in-constructor": 0,
+    "react/static-property-placement": 0,
     "react/prefer-stateless-function": [0, {"ignorePureComponents": true}],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "camelcase": ["error", {
-      allow: [
-      "UNSAFE_componentWillMount",
-      "UNSAFE_componentWillReceiveProps",
-      "child_process"
-    ]}],
+    no-console: ["error", { allow: ["error"] }],
+    "react/jsx-no-target-blank": "off",
+    "camelcase": "off",
+    "linebreak-style": [0, {"allow": ["windows"]}],
     "class-methods-use-this": 0,
+    "no-underscore-dangle": 0,
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/no-noninteractive-element-interactions": 0,
+    "prettier/prettier": ["error", {
+      "printWidth": 80,
+      "tabWidth": 2,
+      "useTabs": false,
+      "semi": true,
+      "singleQuote": true,
+      "trailingComma": "all"
+    }],
     "import/no-unresolved": [
       "error",
       {
-        "ignore": ["i18n", "commons", "components", "containers", "api", "styles", "pages", "modals", "utils", "stores", "config"]
+        "ignore": ["jitsiMeet", "libs", "i18n", "commons", "components", "containers", "api", "styles", "pages", "modals", "utils", "stores", "config", "assets"]
       }
     ],
     "max-lines": [2, {  // specify the max number of lines in a file
@@ -50,14 +76,14 @@
       skipComments: true
     }],
     "max-lines-per-function": [2, {  // enforce a maximum function length
-      max: 50,
+      max: 300,
       skipBlankLines: true,
       skipComments: true,
       IIFEs: true,
     }],
     "max-params": [2, 3],  // limits the number of parameters that can be used in the function declaration.
     "max-depth": [2, 4],  // specify the maximum depth that blocks can be nested
-    "max-statements": [2, 10],  // specify the maximum number of statement allowed in a function
+    "max-statements": [2, 30],  // specify the maximum number of statement allowed in a function
     "max-statements-per-line": [2, { max: 1 }],  // restrict the number of statements per line,
     "import/no-extraneous-dependencies": ["error", {"peerDependencies": true}],
     "quote-props": [0, "always"]

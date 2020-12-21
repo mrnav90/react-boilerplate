@@ -1,4 +1,9 @@
 module.exports = {
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx}',
+    '!src/**/*.test.{js,jsx}',
+    '!src/app.js',
+  ],
   coverageThreshold: {
     global: {
       statements: 98,
@@ -10,11 +15,43 @@ module.exports = {
   moduleDirectories: ['node_modules', 'src'],
   moduleNameMapper: {
     '^components[/](.+)': '<rootDir>/src/components/$1',
+    '^actions[/](.+)': '<rootDir>/src/actions/$1',
+    '^selectors[/](.+)': '<rootDir>/src/selectors/$1',
+    '^reducers[/](.+)': '<rootDir>/src/reducers/$1',
+    '^middlewares[/](.+)': '<rootDir>/src/middlewares/$1',
     '^containers[/](.+)': '<rootDir>/src/containers/$1',
     '^config[/](.+)': '<rootDir>/src/config/$1',
     '^api[/](.+)': '<rootDir>/src/api/$1',
-    '^pages': '<rootDir>/src/pages',
-    '^utils': '<rootDir>/src/utils',
+    '^pages[/](.+)': '<rootDir>/src/pages/$1',
+    '^i18n[/](.+)': '<rootDir>/i18n/$1',
+    '^utils[/](.+)': '<rootDir>/src/utils/$1',
+    '^assets[/](.+)': '<rootDir>/assets/$1',
+    '^src[/](.+)': '<rootDir>/src/$1',
+    '^modals[/](.+)': '<rootDir>/src/modals/$1',
   },
-  setupFiles: ['raf/polyfill', '<rootDir>/enzyme.setup.js'],
+  setupFilesAfterEnv: [
+    '<rootDir>/jest.setup.js',
+    '@testing-library/react/cleanup-after-each',
+    '@testing-library/jest-dom/extend-expect',
+  ],
+  globals: {
+    API_URL: true,
+    APP_URL: true,
+    NODE_ENV: true,
+    APP_DOMAIN: true,
+    SSR: true,
+    SSR_PORT: true,
+    PORT: true,
+    SOCKET_URL: true,
+  },
+  transform: {
+    '^.+\\.(js|jsx)?$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.svg$': 'jest-svg-transformer',
+    '.*\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+      'jest-transform-file',
+  },
+  transformIgnorePatterns: ['<rootDir>/node_modules/'],
+  setupFiles: ['raf/polyfill'],
+  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(js|jsx)?$',
+  snapshotSerializers: [],
 };

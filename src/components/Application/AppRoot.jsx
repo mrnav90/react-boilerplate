@@ -1,27 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider } from 'mobx-react';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import configureStore from 'config/store';
+import { history } from 'config/routes';
 import AppRoutes from './AppRoutes';
 
-export default class AppRoot extends Component {
-  static propTypes = {
-    stores: PropTypes.oneOfType([PropTypes.object]).isRequired,
-    routes: PropTypes.oneOfType([PropTypes.array]).isRequired,
+export default function AppRoot({ routes }) {
+  const rootStore = () => {
+    return configureStore({}, history);
   };
 
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const { stores, routes } = this.props;
-    return (
-      <Provider {...stores}>
-        <Router>
-          <AppRoutes routes={routes} />
-        </Router>
-      </Provider>
-    );
-  }
+  return (
+    <Provider store={rootStore()}>
+      <ConnectedRouter history={history}>
+        <AppRoutes routes={routes} />
+      </ConnectedRouter>
+    </Provider>
+  );
 }
+
+AppRoot.propTypes = {
+  routes: PropTypes.oneOfType([PropTypes.array]).isRequired,
+};

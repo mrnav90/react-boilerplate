@@ -1,7 +1,2 @@
-import Application from './Application';
-import AppRoot from './AppRoot';
-
-export {
-  Application,
-  AppRoot,
-};
+export { default as Application } from './Application';
+export { default as AppRoot } from './AppRoot';

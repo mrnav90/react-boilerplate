@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import * as GlobalStyled from 'styles/GlobalStyled';
+import * as Styled from './styled';
 
-export default class MasterLayout extends Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-  }
+export default function MasterLayout({ children }) {
+  const childrenWithProps = React.Children.map(children, child =>
+    React.cloneElement(child, {}),
+  );
 
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const { children } = this.props;
-    const childrenWithProps = React.Children.map(children, child => React.cloneElement(child, {}));
-    return (
-      <div className="main-layout">
-        {childrenWithProps}
-      </div>
-    );
-  }
+  return (
+    <Styled.MasterLayoutWrapper>
+      {childrenWithProps}
+      <GlobalStyled.AppStyle />
+      <Styled.FontIconLoader />
+    </Styled.MasterLayoutWrapper>
+  );
 }
+
+MasterLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+};

@@ -1,28 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { isAuthenticated } from 'utils/cookie';
+import WebFontLoader from 'components/WebFontLoader';
+import { GOOGLE_WEB_FONT } from 'config/constants';
 import AppRoutes from './AppRoutes';
 
-export default class Application extends Component {
-  static contextTypes = {
-    router: PropTypes.oneOfType([PropTypes.object]),
-  };
-
-  static propTypes = {
-    route: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  };
-
-  constructor(props) {
-    super(props);
-    if (isAuthenticated()) {
-      // do something
-    }
-  }
-
-  render() {
-    const { route } = this.props;
-    return (
+export default function Application({ route }) {
+  return (
+    <>
       <AppRoutes routes={route.routes} />
-    );
-  }
+      <WebFontLoader config={GOOGLE_WEB_FONT} onStatus={() => null} />
+    </>
+  );
 }
+
+Application.propTypes = {
+  route: PropTypes.oneOfType([PropTypes.object]).isRequired,
+};

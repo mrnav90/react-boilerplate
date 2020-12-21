@@ -1,97 +1,58 @@
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import webpack from 'webpack';
+// import CircularDependencyPlugin from 'circular-dependency-plugin';
+import ErrorOverlayPlugin from 'error-overlay-webpack-plugin';
 import path from 'path';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const webpackConfig = {
-  entry: ['./src/app.jsx', 'babel-polyfill'],
   output: {
     path: path.join(__dirname, '../dist'),
-    filename: 'app.js',
-    hotUpdateChunkFilename: 'hot/hot-update.js',
-    hotUpdateMainFilename: 'hot/hot-update.json',
+    filename: '[name].js',
+    hotUpdateChunkFilename: 'hot/hot-update.[hash:6].js',
+    hotUpdateMainFilename: 'hot/hot-update.[hash:6].json',
     publicPath: '/',
+    chunkFilename: '[name].chunk.js',
   },
-  devtool: 'eval-source-map',
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader',
-        }),
-      },
-      {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
+        test: /\.(jpe?g|png|gif|ico|mp4|mp3|txt|woff|woff2|eot|ttf|otf|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              hash: 'sha512',
+              digest: 'hex',
+              name: '[hash].[ext]',
             },
-            {
-              loader: 'sass-loader',
-            },
-          ],
-        }),
-      },
-      {
-        type: 'javascript/auto',
-        test: /\.json$/,
-        loader: 'json-loader',
-      },
-      {
-        test: /\.(md)$/,
-        loader: ExtractTextPlugin.extract({
-          use: [
-            'html', 'highlight', 'markdown',
-          ],
-        }),
-      },
-      {
-        test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
-        loader: 'url-loader',
-      },
-      {
-        test: /\.(jpe?g|png|gif|ico)$/i,
-        loaders: [
-          'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+          },
         ],
       },
     ],
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
       filename: path.join(__dirname, '../dist/index.html'),
       template: path.join(__dirname, '../index.html'),
+      inject: true,
     }),
-    new webpack.ProvidePlugin({
-      '$': 'jquery',
-      'jQuery': 'jquery',
-      'window.jQuery': 'jquery',
-      'window.$': 'jquery',
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      allChunks: true,
+      ignoreOrder: true,
     }),
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new ExtractTextPlugin({ filename: 'app.css', allChunks: true }),
-    new webpack.DefinePlugin({
-      'API_URL': JSON.stringify(process.env.API_URL),
-      'APP_URL': JSON.stringify(process.env.APP_URL),
-    }),
-    new CopyWebpackPlugin([
-      { from: path.join(__dirname, '../assets'), to: path.join(__dirname, '../dist/') },
-    ]),
+    new ErrorOverlayPlugin(),
+    // new CircularDependencyPlugin({
+    //   exclude: /a\.js|node_modules/,
+    //   failOnError: false,
+    // }),
   ],
+  performance: { hints: false },
 };
 
 export default webpackConfig;

@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import path from 'path';
+import webpackBaseConfig from './base';
 import webpackProductionConfig from './production';
 import webpackDevConfig from './dev';
 import serverConfig from './server';
@@ -7,31 +7,35 @@ import serverConfig from './server';
 dotenv.config();
 
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
+const DEBUG = process.env.DEBUG === 'yes';
 const SSR = process.env.SSR === 'yes';
 
 const webpackConfig = {
-  entry: DEVELOPMENT ? webpackDevConfig.entry : webpackProductionConfig.entry,
-  output: DEVELOPMENT ? webpackDevConfig.output : webpackProductionConfig.output,
+  entry: './src/app.jsx',
+  output: DEVELOPMENT
+    ? webpackDevConfig.output
+    : webpackProductionConfig.output,
+  module: {
+    rules: [
+      ...webpackBaseConfig.rules,
+      ...(DEVELOPMENT
+        ? webpackDevConfig.module
+        : webpackProductionConfig.module),
+    ],
+  },
+  optimization: DEVELOPMENT
+    ? webpackDevConfig.optimization
+    : webpackProductionConfig.optimization,
   mode: process.env.NODE_ENV,
   resolve: {
-    extensions: ['.jsx', '.js'],
-    alias: {
-      jquery: path.join(__dirname, '../node_modules/jquery/dist/jquery'),
-      components: path.resolve(__dirname, '../src/components'),
-      containers: path.resolve(__dirname, '../src/containers'),
-      config: path.resolve(__dirname, '../src/config'),
-      api: path.resolve(__dirname, '../src/api'),
-      styles: path.resolve(__dirname, '../src/styles'),
-      pages: path.resolve(__dirname, '../src/pages'),
-      i18n: path.resolve(__dirname, '../i18n'),
-      utils: path.resolve(__dirname, '../src/utils'),
-      assets: path.resolve(__dirname, '../assets'),
-      stores: path.resolve(__dirname, '../src/stores'),
-      src: path.resolve(__dirname, '../src'),
-      modals: path.resolve(__dirname, '../src/modals'),
-    },
+    extensions: ['.js', '.jsx', '.react.js'],
+    mainFields: ['browser', 'jsnext:main', 'main'],
+    modules: ['node_modules', 'src'],
+    alias: webpackBaseConfig.alias,
   },
-  performance: { hints: false },
+  performance: DEVELOPMENT
+    ? webpackDevConfig.performance
+    : webpackProductionConfig.performance,
   node: {
     fs: 'empty',
     child_process: 'empty',
@@ -48,36 +52,17 @@ const webpackConfig = {
       green: '\u001b[32m',
     },
   },
-  module: DEVELOPMENT ? webpackDevConfig.module : webpackProductionConfig.module,
-  plugins: DEVELOPMENT ? webpackDevConfig.plugins : webpackProductionConfig.plugins,
-  devtool: DEVELOPMENT ? webpackDevConfig.devtool : webpackProductionConfig.devtool,
+  plugins: [
+    ...webpackBaseConfig.plugins,
+    ...(DEVELOPMENT
+      ? webpackDevConfig.plugins
+      : webpackProductionConfig.plugins),
+  ],
+  devtool: DEBUG ? 'eval-source-map' : 'source-map',
 };
 
 if (DEVELOPMENT && !SSR) {
-  webpackConfig.devServer = {
-    contentBase: path.join(__dirname, '../dist'),
-    disableHostCheck: true,
-    historyApiFallback: true,
-    host: '0.0.0.0',
-    port: process.env.PORT || 8001,
-    compress: !DEVELOPMENT,
-    inline: DEVELOPMENT,
-    hot: DEVELOPMENT,
-    stats: {
-      assets: true,
-      children: false,
-      chunks: false,
-      hash: false,
-      modules: false,
-      publicPath: false,
-      timings: true,
-      version: false,
-      warnings: true,
-      colors: {
-        green: '\u001b[32m',
-      },
-    },
-  };
+  webpackConfig.devServer = webpackBaseConfig.devServer;
 }
 
 export default SSR ? [webpackConfig, serverConfig] : webpackConfig;
