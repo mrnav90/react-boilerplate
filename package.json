@@ -41,7 +41,7 @@
   "license": "MIT",
   "dependencies": {
     "@zumper/react-ladda": "^7.2.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "compression": "^1.7.4",
     "connected-react-router": "^6.7.0",
