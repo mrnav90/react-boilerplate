@@ -96,7 +96,7 @@
     "toastr": "^2.1.4",
     "typesafe-actions": "^5.1.0",
     "universal-cookie": "^3.0.7",
-    "validator": "^10.11.0",
+    "validator": "^13.7.0",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
