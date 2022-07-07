@@ -55,7 +55,7 @@
     "lint-staged": "^10.0.8",
     "lodash": "^4.17.15",
     "memoize-one": "^5.1.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.28",
     "normalize.css": "^8.0.1",
     "offline-plugin": "^5.0.7",
