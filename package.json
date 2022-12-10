@@ -46,7 +46,7 @@
     "compression": "^1.7.4",
     "connected-react-router": "^6.7.0",
     "ejs": "^3.0.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "history": "^4.10.1",
     "hoist-non-react-statics": "^3.3.2",
     "jquery": "^3.3.1",
